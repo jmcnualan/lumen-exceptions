@@ -1,1 +1,1 @@
-# dmn/exceptions
+# dmn/exception
