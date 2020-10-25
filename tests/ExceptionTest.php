@@ -4,7 +4,7 @@ use Dmn\Exceptions\Example\Controllers\TestController;
 use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
 use Dmn\Exceptions\Example\Models\TestModelWithResourceName;
-use Dmn\Exceptions\Exception;
+use Dmn\Exceptions\ThrottleRequestsException;
 use Laravel\Lumen\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 
@@ -190,5 +190,23 @@ class ExceptionTest extends TestCase
         $this->assertEquals('unexpected_error', $jsonResponse['error']);
         $this->assertEquals('Unexpected error.', $jsonResponse['message']);
         $this->assertEquals('Unexpected error.', $jsonResponse['error_description']);
+    }
+
+    /**
+     * @test
+     * @testdox Throttle request
+     *
+     * @return void
+     */
+    public function throttle(): void
+    {
+        $this->app->router->post('/', function () {
+            throw new ThrottleRequestsException();
+        });
+
+        $this->post('/');
+
+        $jsonResponse = $this->response->json();
+        $this->assertEquals('too_many_requests', $jsonResponse['error']);
     }
 }

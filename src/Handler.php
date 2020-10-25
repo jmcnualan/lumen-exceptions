@@ -5,6 +5,7 @@ namespace Dmn\Exceptions;
 use Dmn\Exceptions\MethodNotAllowedHttpException as AppMethodNotAllowedHttpException;
 use Dmn\Exceptions\ModelNotFoundException as AppModelNotFoundException;
 use Dmn\Exceptions\NotFoundHttpException as AppNotFoundHttpException;
+use Dmn\Exceptions\ThrottleRequestsException as AppThrottleRequestsException;
 use Dmn\Exceptions\ValidationException as AppValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -72,6 +73,15 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof MethodNotAllowedHttpException) {
             return new AppMethodNotAllowedHttpException();
+        }
+
+        if ($exception instanceof ThrottleRequestsException) {
+            return new AppThrottleRequestsException(
+                $exception->getMessage(),
+                $exception->getPrevious(),
+                $exception->getHeaders(),
+                $exception->getCode(),
+            );
         }
 
         return $exception;
