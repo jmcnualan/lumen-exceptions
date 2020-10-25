@@ -4,7 +4,7 @@ use Dmn\Exceptions\Example\Controllers\TestController;
 use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
 use Dmn\Exceptions\Example\Models\TestModelWithResourceName;
-use Dmn\Exceptions\ThrottleRequestsException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Laravel\Lumen\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
 
