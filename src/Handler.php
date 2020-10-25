@@ -9,6 +9,7 @@ use Dmn\Exceptions\ThrottleRequestsException as AppThrottleRequestsException;
 use Dmn\Exceptions\ValidationException as AppValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
