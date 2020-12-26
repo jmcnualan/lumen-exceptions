@@ -4,6 +4,8 @@ use Dmn\Exceptions\Example\Controllers\TestController;
 use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
 use Dmn\Exceptions\Example\Models\TestModelWithResourceName;
+use Dmn\Exceptions\TokenExpiredException;
+use Dmn\Exceptions\UnauthorizedException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Laravel\Lumen\Http\Request;
 use Laravel\Lumen\Testing\TestCase;
@@ -208,5 +210,41 @@ class ExceptionTest extends TestCase
 
         $jsonResponse = $this->response->json();
         $this->assertEquals('too_many_requests', $jsonResponse['error']);
+    }
+
+    /**
+     * @test
+     * @testdox Token expired
+     *
+     * @return void
+     */
+    public function tokenExpired(): void
+    {
+        $this->app->router->post('/', function () {
+            throw new TokenExpiredException();
+        });
+
+        $this->post('/');
+
+        $jsonResponse = $this->response->json();
+        $this->assertEquals('token_expired', $jsonResponse['error']);
+    }
+
+    /**
+     * @test
+     * @testdox Token expired
+     *
+     * @return void
+     */
+    public function unauthorized(): void
+    {
+        $this->app->router->post('/', function () {
+            throw new UnauthorizedException();
+        });
+
+        $this->post('/');
+
+        $jsonResponse = $this->response->json();
+        $this->assertEquals('unauthorized', $jsonResponse['error']);
     }
 }

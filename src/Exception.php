@@ -11,8 +11,6 @@ class Exception extends BaseException
 
     protected $message = 'Unexpected error.';
 
-    protected $description = 'Unexpected error.';
-
     /**
      * Construct
      *
