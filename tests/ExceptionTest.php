@@ -4,6 +4,7 @@ use Dmn\Exceptions\Example\Controllers\TestController;
 use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
 use Dmn\Exceptions\Example\Models\TestModelWithResourceName;
+use Dmn\Exceptions\ForbiddenException;
 use Dmn\Exceptions\TokenExpiredException;
 use Dmn\Exceptions\UnauthorizedException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
@@ -246,5 +247,23 @@ class ExceptionTest extends TestCase
 
         $jsonResponse = $this->response->json();
         $this->assertEquals('unauthorized', $jsonResponse['error']);
+    }
+
+    /**
+     * @test
+     * @testdox Has no permission
+     *
+     * @return void
+     */
+    public function forbidden(): void
+    {
+        $this->app->router->post('/', function () {
+            throw new ForbiddenException();
+        });
+
+        $this->post('/');
+
+        $jsonResponse = $this->response->json();
+        $this->assertEquals('forbidden', $jsonResponse['error']);
     }
 }
