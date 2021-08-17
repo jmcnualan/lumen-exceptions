@@ -154,14 +154,14 @@ class ExceptionTest extends TestCase
     public function unprocessableEntity(): void
     {
         $this->app->router->post('/', [
-            'as' => 'reference.name',
+            'as' => 'reference.group1.field',
             'uses' => TestController::class . '@test'
         ]);
 
         $this->json('POST', '/');
 
         $this->response->assertJsonValidationErrors([
-            'name' => 'The name field is required'
+            'field' => 'The field field is required'
         ]);
 
         $jsonResponse = $this->response->json();

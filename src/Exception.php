@@ -93,13 +93,14 @@ class Exception extends BaseException
      */
     private function setReferences(array &$response): void
     {
-        $references = (array) config('validation.references');
+        $group      = config('validation.default_group');
+        $references = (array) config('validation.references.' . $group);
 
         foreach ($references as $reference => $data) {
             $pattern = '/^' . $reference . '(\.\S+)?$/i';
             $matches = preg_grep($pattern, array_keys($response['errors']));
             if (count($matches) > 0) {
-                $route = route('reference.' . $reference);
+                $route = route('reference.' . $group . '.' . $reference);
                 $response['meta']['references'][$reference] = $route;
             }
         }

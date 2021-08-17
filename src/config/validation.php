@@ -1,10 +1,13 @@
 <?php
 
 return [
+    'default_group' => 'group1',
     'references' => [
-        'name' => [
-            'name1',
-            'name2',
+        'group1' => [
+            'field' => [
+                'name1',
+                'name2',
+            ]
         ],
     ]
 ];

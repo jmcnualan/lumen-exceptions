@@ -2,8 +2,8 @@
 
 namespace Dmn\Exceptions\Example\Controllers;
 
-use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Laravel\Lumen\Routing\Controller;
 
 class TestController extends Controller
@@ -17,6 +17,6 @@ class TestController extends Controller
      */
     public function test(Request $request): void
     {
-        $this->validate($request, ['name' => 'required']);
+        $this->validate($request, ['field' => 'required']);
     }
 }
