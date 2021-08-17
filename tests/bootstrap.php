@@ -24,4 +24,10 @@ $app->singleton(
     \Laravel\Lumen\Console\Kernel::class
 );
 
+$app->configure('validation');
+
+$app->router->group([], function ($router) {
+    require __DIR__ . '/../routes/reference.php';
+});
+
 return $app;

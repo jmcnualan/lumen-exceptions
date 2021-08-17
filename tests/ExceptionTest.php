@@ -28,8 +28,6 @@ class ExceptionTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $path = __DIR__ . '/../src/config/validation.php';
-        $this->app->make('config')->set('validation', require $path);
     }
 
     /**
@@ -246,5 +244,21 @@ class ExceptionTest extends TestCase
 
         $jsonResponse = $this->response->json();
         $this->assertEquals('unauthorized', $jsonResponse['error']);
+    }
+
+    /**
+     * @test
+     * @testdox It can get meta reference
+     *
+     * @return void
+     */
+    public function metaReference(): void
+    {
+        $this->get(route('reference.group1.field'));
+
+        $this->assertEquals(
+            config('validation.references.group1.field'),
+            $this->response->json('data')
+        );
     }
 }
