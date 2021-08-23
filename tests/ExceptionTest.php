@@ -1,5 +1,6 @@
 <?php
 
+use Dmn\Exceptions\ESNoHitsFoundException;
 use Dmn\Exceptions\Example\Controllers\TestController;
 use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
@@ -278,5 +279,26 @@ class ExceptionTest extends TestCase
 
         $jsonResponse = $this->response->json();
         $this->assertEquals('forbidden', $jsonResponse['error']);
+    }
+
+    /**
+     * @test
+     * @testdox No hits found on elasticsearch
+     *
+     * @return void
+     */
+    public function esNoHitsFound(): void
+    {
+        $this->app->router->post('/', function () {
+            throw new ESNoHitsFoundException('users');
+        });
+
+        $this->post('/');
+
+        $jsonResponse = $this->response->json();
+        $this->assertResponseStatus(404);
+        $this->assertEquals('es_no_hits', $jsonResponse['error']);
+        $this->assertEquals('users not found.', $jsonResponse['message']);
+        $this->assertEquals('users not found.', $jsonResponse['error_description']);
     }
 }
