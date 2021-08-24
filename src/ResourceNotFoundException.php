@@ -2,11 +2,11 @@
 
 namespace Dmn\Exceptions;
 
-class ESNoHitsFoundException extends Exception
+class ResourceNotFoundException extends Exception
 {
     protected $httpStatusCode = 404;
 
-    protected $code = 'es_no_hits';
+    protected $code = 'resource_not_found';
 
     /**
      * Constructor
@@ -24,11 +24,11 @@ class ESNoHitsFoundException extends Exception
     /**
      * Build message
      *
-     * @param string $index
+     * @param string $resource
      * @return string
      */
-    private function buildMessage(string $index): string
+    private function buildMessage(string $resource): string
     {
-        return $index . ' not found.';
+        return $resource . ' not found.';
     }
 }

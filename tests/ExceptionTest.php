@@ -1,11 +1,11 @@
 <?php
 
-use Dmn\Exceptions\ESNoHitsFoundException;
 use Dmn\Exceptions\Example\Controllers\TestController;
 use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
 use Dmn\Exceptions\Example\Models\TestModelWithResourceName;
 use Dmn\Exceptions\ForbiddenException;
+use Dmn\Exceptions\ResourceNotFoundException;
 use Dmn\Exceptions\TokenExpiredException;
 use Dmn\Exceptions\UnauthorizedException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
@@ -287,18 +287,18 @@ class ExceptionTest extends TestCase
      *
      * @return void
      */
-    public function esNoHitsFound(): void
+    public function resourceNotFound(): void
     {
         $this->app->router->post('/', function () {
-            throw new ESNoHitsFoundException('users');
+            throw new ResourceNotFoundException('resource1');
         });
 
         $this->post('/');
 
         $jsonResponse = $this->response->json();
         $this->assertResponseStatus(404);
-        $this->assertEquals('es_no_hits', $jsonResponse['error']);
-        $this->assertEquals('users not found.', $jsonResponse['message']);
-        $this->assertEquals('users not found.', $jsonResponse['error_description']);
+        $this->assertEquals('resource_not_found', $jsonResponse['error']);
+        $this->assertEquals('resource1 not found.', $jsonResponse['message']);
+        $this->assertEquals('resource1 not found.', $jsonResponse['error_description']);
     }
 }
