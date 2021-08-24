@@ -5,6 +5,7 @@ use Dmn\Exceptions\Example\MergeMetaException;
 use Dmn\Exceptions\Example\Models\TestModel;
 use Dmn\Exceptions\Example\Models\TestModelWithResourceName;
 use Dmn\Exceptions\ForbiddenException;
+use Dmn\Exceptions\ResourceNotFoundException;
 use Dmn\Exceptions\TokenExpiredException;
 use Dmn\Exceptions\UnauthorizedException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
@@ -278,5 +279,26 @@ class ExceptionTest extends TestCase
 
         $jsonResponse = $this->response->json();
         $this->assertEquals('forbidden', $jsonResponse['error']);
+    }
+
+    /**
+     * @test
+     * @testdox No hits found on elasticsearch
+     *
+     * @return void
+     */
+    public function resourceNotFound(): void
+    {
+        $this->app->router->post('/', function () {
+            throw new ResourceNotFoundException('resource1');
+        });
+
+        $this->post('/');
+
+        $jsonResponse = $this->response->json();
+        $this->assertResponseStatus(404);
+        $this->assertEquals('resource_not_found', $jsonResponse['error']);
+        $this->assertEquals('resource1 not found.', $jsonResponse['message']);
+        $this->assertEquals('resource1 not found.', $jsonResponse['error_description']);
     }
 }
