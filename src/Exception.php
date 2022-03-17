@@ -3,6 +3,7 @@
 namespace Dmn\Exceptions;
 
 use Exception as BaseException;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class Exception extends BaseException
@@ -63,7 +64,7 @@ class Exception extends BaseException
         $this->mergeMeta($response);
         $this->mergeErrorResponse($response);
 
-        return response()->json($response, $this->httpStatusCode ?? 400);
+        return new JsonResponse($response, $this->httpStatusCode ?? 400);
     }
 
     /**
